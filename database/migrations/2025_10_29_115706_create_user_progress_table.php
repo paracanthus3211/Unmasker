@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('user_progress', function (Blueprint $table) {
             $table->id();
-            $table->user_id();
-            $table->subject();
-            $table->message();
+            $table->integer('user_id');
+            $table->integer('level_id');
+            $table->integer('score');
+            $table->integer('correct_answers');
+            $table->integer('wrong_answers');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('user_progress');
     }
 };

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Livewire\Leaderboard;
 use App\Livewire\Quizz;
 use App\Livewire\Literacy;
+use App\Livewire\Login;
+use App\Livewire\Register;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,6 +17,6 @@ Route::get('/dashboard',Dashboard::class);
 Route::get('/leaderboard',Leaderboard::class);
 Route::get('/quizz',Quizz::class);
 Route::get('/literacy',Literacy::class);
-
-
+Route::get('/login', Login::class)->name('login');
+Route::get('/register', Register::class)->name('register');
 
