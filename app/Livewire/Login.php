@@ -9,24 +9,39 @@ use Livewire\Component;
 class Login extends Component
 {
     #[Layout('components.layouts.auth')]
-
-public $email;
-
-public $password;
+    public $email;
+    public $password;
 
     public function render()
     {
         return view('livewire.login');
     }
-    public function login(){
-    
-    if(Auth::attempt([
-        'email' => $this->email,
-        'password' => $this->password
-    ])){
-        return $this->redirect('/dashboard',navigate:true);
-    }
-    return $this->redirect('login',navigate:true);
+
+    public function login()
+    {
+        // Coba login
+        if (Auth::attempt([
+            'email' => $this->email,
+            'password' => $this->password
+        ])) {
+            // ✅ Tampilkan pesan sukses
+            $this->dispatch('swal', [
+                'icon' => 'success',
+                'title' => 'Berhasil Login!',
+                'text' => 'Selamat datang kembali 👋'
+            ]);
+
+            // Delay sedikit agar SweetAlert muncul sebelum redirect
+            usleep(500000); // 0.5 detik
+
+            return $this->redirect('/dashboard', navigate: true);
+        }
+
+        // ❌ Jika gagal login
+        $this->dispatch('swal', [
+            'icon' => 'error',
+            'title' => 'Gagal Login!',
+            'text' => 'Email atau password salah.'
+        ]);
     }
 }
-
