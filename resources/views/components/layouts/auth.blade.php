@@ -8,7 +8,7 @@
   <title>Login - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Favicons -->
   <link href="/assets/img/favicon.png" rel="icon">
   <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -85,6 +85,17 @@
   <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="/assets/vendor/php-email-form/validate.js"></script>
   <script src="/assets/js/main.js"></script>
+    <script>
+    // Refresh CSRF token setiap 30 menit (opsional, tapi aman)
+    setInterval(() => {
+        fetch('/csrf-token')
+            .then(res => res.json())
+            .then(data => {
+                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.token);
+                Livewire.csrfToken = data.token;
+            });
+    }, 1800000); // 30 menit
+</script>
 
   <!-- SweetAlert2 -->
  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

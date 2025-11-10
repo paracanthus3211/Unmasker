@@ -24,6 +24,8 @@ class Login extends Component
             'email' => $this->email,
             'password' => $this->password
         ])) {
+            $user = Auth::user();
+
             // ✅ Tampilkan pesan sukses
             $this->dispatch('swal', [
                 'icon' => 'success',
@@ -34,7 +36,12 @@ class Login extends Component
             // Delay sedikit agar SweetAlert muncul sebelum redirect
             usleep(500000); // 0.5 detik
 
-            return $this->redirect('/dashboard', navigate: true);
+            // 🔁 Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return $this->redirect('/admin/dashboard', navigate: true);
+            } else {
+                return $this->redirect('/dashboard', navigate: true);
+            }
         }
 
         // ❌ Jika gagal login

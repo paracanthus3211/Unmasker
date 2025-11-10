@@ -270,35 +270,35 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-  <a wire:navigate class="nav-link collapsed" href="/dashboard">
+  <a wire:navigate class="nav-link collapsed" href="/admin/dashboard">
     <i class="bi bi-grid"></i>
     <span>Dashboard</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a wire:navigate class="nav-link collapsed" href="/leaderboard">
+  <a wire:navigate class="nav-link collapsed" href="/admin/leaderboard">
     <i class="bi bi-bar-chart"></i>
     <span>Leaderboard</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a wire:navigate class="nav-link collapsed" href="/quizz">
+  <a wire:navigate class="nav-link collapsed" href="/admin/quizz">
     <i class="bi bi-question-circle"></i>
     <span>Quizz</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a wire:navigate class="nav-link collapsed" href="/literacy">
+  <a wire:navigate class="nav-link collapsed" href="/admin/literacy">
     <i class="bi bi-book"></i>
     <span>Literacy</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a wire:navigate class="nav-link collapsed" href="/about">
+  <a wire:navigate class="nav-link collapsed" href="/admin/about">
     <i class="bi bi-info-circle"></i>
     <span>About</span>
   </a>
