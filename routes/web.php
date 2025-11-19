@@ -1,27 +1,30 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Dashboard;
-use App\Livewire\Leaderboard;
-use App\Livewire\Quizz;
-use App\Livewire\Literacy;
+use Illuminate\Support\Facades\Auth;
+
+// Livewire Components
 use App\Livewire\Login;
 use App\Livewire\Register;
-use App\Livewire\Level;
-use App\Livewire\About;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
+use App\Livewire\User\Dashboard;
+use App\Livewire\User\Leaderboard;
+use App\Livewire\User\Quizz as UserQuizz;
+use App\Livewire\User\Literacy;
+use App\Livewire\User\About;
+use App\Livewire\User\QuizPlay;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Livewire\Admin\Literacy as AdminLiteracy;
 use App\Livewire\Admin\Quizz as AdminQuizz;
 use App\Livewire\Admin\Leaderboard as AdminLeaderboard;
 use App\Livewire\Admin\About as AdminAbout;
-use Illuminate\Support\Facades\Auth;
+use App\Livewire\Admin\QuizManager;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return redirect('/login');
 });
 
+// Public Routes
 Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');
 
@@ -36,33 +39,30 @@ Route::get('/fisiognomi', function () {
     return view('Literacy.fisiognomi');
 })->name('fisiognomi');
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/dashboard',AdminDashboard::class )->name('admin.dashboard');
+// ADMIN ROUTES
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', AdminDashboard::class)->name('dashboard');
+    Route::get('/literacy', AdminLiteracy::class)->name('literacy');
+    Route::get('/quizz', AdminQuizz::class)->name('quizz');
+    Route::get('/leaderboard', AdminLeaderboard::class)->name('leaderboard');
+    Route::get('/about', AdminAbout::class)->name('about');
+    Route::get('/quiz-manager', QuizManager::class)->name('quiz.manager');
+    Route::get('/quiz/play/{levelId}', QuizPlay::class)->name('quiz.play'); // Admin bisa play quiz
 });
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/literacy',AdminLiteracy::class )->name('admin.literacy');
-});
-
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/quizz',AdminQuizz::class )->name('admin.quizz');
-});
-
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/leaderboard',AdminLeaderboard::class )->name('admin.leaderboard');
-});
-
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin/about',AdminAbout::class )->name('admin.about');
-});
-
-// Halaman yang butuh login
-Route::middleware(['auth', 'isUser'])->group(function () {
+// USER ROUTES
+Route::middleware(['auth', 'isUser'])->prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/leaderboard', Leaderboard::class)->name('leaderboard');
-    Route::get('/quizz', Quizz::class)->name('quizz');
+    Route::get('/quizz', UserQuizz::class)->name('quizz');
     Route::get('/literacy', Literacy::class)->name('literacy');
-    Route::get('/quizz/level/{num}', Level::class)->whereNumber('num')->name('level');
     Route::get('/about', About::class)->name('about');
-    
+    Route::get('/quiz/play/{levelId}', QuizPlay::class)->name('quiz.play');
 });
+
+// HAPUS route duplikat ini - sudah ada di group user di atas
+// Route::middleware(['auth', 'isUser'])->group(function () {
+//     Route::get('/quizz', UserQuizz::class)->name('user.quizz.alt');
+// });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

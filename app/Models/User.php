@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_active'
     ];
 
     /**
@@ -43,6 +44,77 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * Relationship dengan quiz results
+     */
+    public function quizResults()
+    {
+        return $this->hasMany(QuizResult::class);
+    }
+
+    /**
+     * Relationship dengan user progress
+     */
+    public function userProgress()
+    {
+        return $this->hasMany(UserQuizProgress::class);
+    }
+
+    /**
+     * Scope untuk user aktif
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    /**
+     * Attribute untuk jumlah level yang diselesaikan
+     */
+    public function getCompletedLevelsCountAttribute()
+    {
+        return $this->quizResults()->distinct('level_id')->count();
+    }
+
+    /**
+     * Attribute untuk rata-rata score
+     */
+    public function getAverageScoreAttribute()
+    {
+        return $this->quizResults()->avg('score') ?? 0;
+    }
+
+    /**
+     * Attribute untuk total kuis yang diselesaikan
+     */
+    public function getTotalQuizzesCompletedAttribute()
+    {
+        return $this->quizResults()->count();
+    }
+
+    /**
+     * Cek apakah user sudah menyelesaikan level tertentu
+     */
+    public function hasCompletedLevel($levelId)
+    {
+        return $this->quizResults()
+            ->where('level_id', $levelId)
+            ->exists();
+    }
+
+    /**
+     * Get score user untuk level tertentu
+     */
+    public function getLevelScore($levelId)
+    {
+        $result = $this->quizResults()
+            ->where('level_id', $levelId)
+            ->first();
+            
+        return $result ? $result->score : null;
     }
 }

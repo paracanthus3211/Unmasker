@@ -40,7 +40,7 @@ class Login extends Component
             if ($user->role === 'admin') {
                 return $this->redirect('/admin/dashboard', navigate: true);
             } else {
-                return $this->redirect('/dashboard', navigate: true);
+                return $this->redirect('/user/dashboard', navigate: true);
             }
         }
 

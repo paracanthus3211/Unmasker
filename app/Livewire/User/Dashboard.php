@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Livewire;
-
+namespace App\Livewire\User;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.app')]
 class Dashboard extends Component
 {
     public $correctAnswers = 15;
@@ -15,7 +16,7 @@ class Dashboard extends Component
 
     public function render()
     {
-        return view('livewire.dashboard');
+        return view('livewire.user.dashboard');
     }
 }
 
