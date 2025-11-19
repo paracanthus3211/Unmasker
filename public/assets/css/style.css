@@ -12,11 +12,11 @@
   scroll-behavior: smooth;
 }
 
-body {
+/* body {
   font-family: "Open Sans", sans-serif;
   background: radial-gradient(circle at top left, #8e4bb2, #0d0015 80%);
   color: #e8d9ff;
-}
+} */
 
 a {
   color: #c084f5;
