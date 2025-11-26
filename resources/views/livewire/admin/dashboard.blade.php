@@ -1,65 +1,193 @@
-<div class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
-    <div class="container mt-5 pt-5">
-        <h2 class="text-center mb-4 fw-bold">📊 Statistic Unmasker</h2>
+<div>
+    <div class="pagetitle">
+        <h1>📊 Dashboard Admin Unmasker</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
 
-        <div class="card shadow-sm p-4">
-            <canvas id="dummyChart" height="100"></canvas>
+    <section class="section dashboard">
+        <div class="row">
+            
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="row">
+                    
+                    <!-- Stats Cards -->
+                    <div class="col-xxl-3 col-md-6">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Users</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ $stats['totalUsers'] ?? 0 }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">{{ $stats['activeUsers'] ?? 0 }}</span>
+                                        <span class="text-muted small pt-2 ps-1">aktif</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+                        <div class="card info-card revenue-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Articles</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-journal-text"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ $stats['totalArticles'] ?? 0 }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">{{ $stats['publishedArticles'] ?? 0 }}</span>
+                                        <span class="text-muted small pt-2 ps-1">published</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+                        <div class="card info-card customers-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Quiz Levels</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-list-ol"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ $stats['totalQuizLevels'] ?? 0 }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">{{ $stats['recentActiveUsers'] ?? 0 }}</span>
+                                        <span class="text-muted small pt-2 ps-1">active users</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xxl-3 col-md-6">
+                        <div class="card info-card sales-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Quiz Attempts</h5>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6>{{ $stats['totalQuizAttempts'] ?? 0 }}</h6>
+                                        <span class="text-success small pt-1 fw-bold">{{ $stats['averageQuizScore'] ?? 0 }}%</span>
+                                        <span class="text-muted small pt-2 ps-1">avg score</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📈 User Statistics</h5>
+                                <div id="userStatsChart" style="min-height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">📊 Content Overview</h5>
+                                <div id="contentChart" style="min-height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Left side columns -->
+
         </div>
-    </div>
-</div>
+    </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const ctx = document.getElementById('dummyChart').getContext('2d');
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
 
-    const dummyChart = new Chart(ctx, {
-        type: 'bar', // tipe chart: bar, line, pie, dll.
-        data: {
-            labels: ['Pengguna Aktif', 'Total Kuis', 'Kuis Selesai', 'Nilai Rata-rata', 'Kuis Terpopuler'],
-            datasets: [{
-                label: 'Data Sementara',
-                data: [120, 15, 98, 82, 10],
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(255, 159, 64, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(54, 162, 235, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 205, 86, 1)',
-                    'rgba(54, 162, 235, 1)'
-                ],
-                borderWidth: 1,
-                borderRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'Data Dummy untuk Tampilan Dashboard'
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // User Statistics Chart - Bar Chart
+        var userStatsOptions = {
+            series: [{
+                name: 'Count',
+                data: [
+                    {{ $stats['totalUsers'] ?? 0 }},
+                    {{ $stats['activeUsers'] ?? 0 }},
+                    {{ $stats['recentActiveUsers'] ?? 0 }},
+                    {{ $stats['totalQuizAttempts'] ?? 0 }}
+                ]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: false,
                 }
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        precision: 0
+            dataLabels: {
+                enabled: false
+            },
+            colors: ['#4154f1'],
+            xaxis: {
+                categories: ['Total Users', 'Active Users', 'Recent Active', 'Quiz Attempts']
+            },
+            yaxis: {
+                title: {
+                    text: 'Count'
+                }
+            }
+        };
+
+        var userStatsChart = new ApexCharts(document.querySelector("#userStatsChart"), userStatsOptions);
+        userStatsChart.render();
+
+        // Content Overview Chart - Donut Chart
+        var contentOptions = {
+            series: [{{ $stats['totalArticles'] ?? 0 }}, {{ $stats['publishedArticles'] ?? 0 }}, {{ $stats['totalQuizLevels'] ?? 0 }}],
+            chart: {
+                type: 'donut',
+                height: 350
+            },
+            labels: ['Total Articles', 'Published Articles', 'Quiz Levels'],
+            colors: ['#2eca6a', '#4154f1', '#ff771d'],
+            legend: {
+                position: 'bottom'
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '65%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'Total Content',
+                                color: '#373d3f'
+                            }
+                        }
                     }
                 }
             }
-        }
+        };
+
+        var contentChart = new ApexCharts(document.querySelector("#contentChart"), contentOptions);
+        contentChart.render();
     });
-});
-</script>
+    </script>
+</div>

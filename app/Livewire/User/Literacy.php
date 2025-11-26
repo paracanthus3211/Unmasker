@@ -1,14 +1,21 @@
 <?php
-
 namespace App\Livewire\User;
-use Livewire\Attributes\Layout;
+
 use Livewire\Component;
+use Livewire\Attributes\Layout;
+use App\Models\Article;
 
 #[Layout('components.layouts.app')]
 class Literacy extends Component
 {
     public function render()
     {
-        return view('livewire.user.literacy');
+        $articles = Article::where('is_published', true)
+            ->latest()
+            ->get();
+        
+        return view('livewire.user.literacy', [
+            'articles' => $articles
+        ]);
     }
 }

@@ -23,10 +23,10 @@
                                     class="btn btn-primary btn-lg px-5 fw-bold">
                                 <i class="bi bi-arrow-repeat me-2"></i> Main Lagi
                             </button>
-                            <a href="{{ route('admin.quizz') }}" 
-                               class="btn btn-outline-dark btn-lg px-5 fw-bold">
-                                <i class="bi bi-house me-2"></i> Kembali
-                            </a>
+                            <a href="{{ route('user.quizz') }}" 
+   class="btn btn-outline-dark btn-lg px-5 fw-bold">
+    <i class="bi bi-house me-2"></i> Kembali
+</a>
                         </div>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                             <div class="text-center text-muted py-5">
                                 <i class="bi bi-exclamation-triangle display-1 text-warning"></i>
                                 <h4 class="mt-3">Soal tidak ditemukan</h4>
-                                <a href="{{ route('admin.quizz') }}" class="btn btn-primary mt-3">
+                                <a href="{{ route('user.quizz') }}" class="btn btn-primary mt-3">
                                     Kembali ke Level
                                 </a>
                             </div>

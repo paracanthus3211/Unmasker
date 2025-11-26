@@ -29,6 +29,9 @@
 
   <!-- Template Main CSS File -->
   <link href="/assets/css/style.css" rel="stylesheet">
+  
+  <!-- Livewire Styles -->
+  @livewireStyles
 </head>
 
 <body>
@@ -38,7 +41,6 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <a href="{{ route('admin.dashboard') }}" class="logo d-flex align-items-center">
-        <img src="/assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">Unmasker🎭</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -47,70 +49,74 @@
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
+        <!-- Search Bar for Desktop -->
+        <li class="nav-item d-none d-md-block">
+          <div class="search-bar-container position-relative">
+            <button class="nav-link nav-icon search-bar-toggle bg-transparent border-0" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#searchBarCollapse"
+                    aria-expanded="false" 
+                    aria-controls="searchBarCollapse">
+              <i class="bi bi-search"></i>
+            </button>
+            
+            <div class="collapse position-absolute search-dropdown" id="searchBarCollapse" 
+                 style="top: 100%; right: 0; width: 350px; z-index: 1000;">
+              <div class="card shadow-lg border-0">
+                <div class="card-body p-3">
+                  <!-- Livewire Search Component -->
+                  @livewire('admin.user-search')
+                </div>
+              </div>
+            </div>
+          </div>
+        </li><!-- End Search Bar -->
+
+        <!-- Mobile Search Icon -->
+        <li class="nav-item d-block d-md-none">
+          <a class="nav-link nav-icon search-bar-toggle" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
             <i class="bi bi-search"></i>
           </a>
-        </li><!-- End Search Icon-->
+        </li><!-- End Mobile Search Icon-->
 
+        <!-- 🔥 NOTIFICATION BELL - ADMIN -->
         <li class="nav-item dropdown">
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-          </ul><!-- End Notification Dropdown Items -->
+          <livewire:user.notification-bell />
         </li><!-- End Notification Nav -->
 
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
-          </a><!-- End Profile Image Icon -->
+            @php
+                $user = Auth::user();
+                $avatarUrl = $user->avatar_url ?? '/assets/img/default-avatar.png';
+            @endphp
+            <img src="{{ $avatarUrl }}" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ $user->name ?? 'Admin' }}</span>
+          </a>
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>{{ Auth::user()->name }}</h6>
+              <h6>{{ Auth::user()->name ?? 'Admin' }}</h6>
               <span>Administrator</span>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profile') }}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
             </li>
-            <li><hr class="dropdown-divider"></li>
+            
+            <!-- Friends Menu Item -->
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.friends') }}">
+                <i class="bi bi-people"></i>
+                <span>My Friends</span>
               </a>
             </li>
             <li><hr class="dropdown-divider"></li>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
+           
             <li><hr class="dropdown-divider"></li>
             <li>
               <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
@@ -118,7 +124,7 @@
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
-              <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
               </form>
             </li>
@@ -134,35 +140,53 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a wire:navigate class="nav-link collapsed" href="{{ route('admin.dashboard') }}">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.dashboard') ? '' : 'collapsed' }}" href="{{ route('admin.dashboard') }}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a wire:navigate class="nav-link collapsed" href="{{ route('admin.leaderboard') }}">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.leaderboard') ? '' : 'collapsed' }}" href="{{ route('admin.leaderboard') }}">
           <i class="bi bi-bar-chart"></i>
           <span>Leaderboard</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a wire:navigate class="nav-link collapsed" href="{{ route('admin.quizz') }}">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.quizz') ? '' : 'collapsed' }}" href="{{ route('admin.quizz') }}">
           <i class="bi bi-question-circle"></i>
           <span>Quizz</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a wire:navigate class="nav-link collapsed" href="{{ route('admin.literacy') }}">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.literacy') ? '' : 'collapsed' }}" href="{{ route('admin.literacy') }}">
           <i class="bi bi-book"></i>
           <span>Literacy</span>
         </a>
       </li>
 
+      <!-- Friends Sidebar Item -->
       <li class="nav-item">
-        <a wire:navigate class="nav-link collapsed" href="{{ route('admin.about') }}">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.friends') ? '' : 'collapsed' }}" href="{{ route('admin.friends') }}">
+          <i class="bi bi-people"></i>
+          <span>Friends</span>
+          @auth
+            @php
+                $pendingCount = auth()->user()->friendRequests()->count();
+            @endphp
+            @if($pendingCount > 0)
+                <span class="badge bg-danger rounded-pill ms-auto">
+                    {{ $pendingCount }}
+                </span>
+            @endif
+          @endauth
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a wire:navigate class="nav-link {{ request()->routeIs('admin.about') ? '' : 'collapsed' }}" href="{{ route('admin.about') }}">
           <i class="bi bi-info-circle"></i>
           <span>About</span>
         </a>
@@ -172,10 +196,28 @@
 
   <!-- ======= Main Content ======= -->
   <main id="main" class="main">
-    <div class="p-3">
-      {{ $slot }}
+    <div class="p-4">
+      <!-- Menambahkan wrapper untuk Livewire components -->
+      <div>
+        {{ $slot }}
+      </div>
     </div>
   </main><!-- End #main -->
+
+  <!-- Search Modal for Mobile -->
+  <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Search Users</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          @livewire('admin.user-search')
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -201,6 +243,154 @@
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
+
+  <!-- Livewire Scripts -->
+  @livewireScripts
+
+  <style>
+    .search-dropdown {
+      min-width: 350px;
+    }
+    
+    .search-bar-container .nav-icon {
+      color: #6c757d;
+      transition: color 0.3s ease;
+      padding: 8px 12px;
+      border-radius: 50%;
+    }
+    
+    .search-bar-container .nav-icon:hover {
+      color: #4154f1;
+      background-color: rgba(65, 84, 241, 0.1);
+    }
+    
+    .friend-result-item {
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    
+    .friend-result-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    /* Mobile search modal styling */
+    #searchModal .modal-body {
+      padding: 0;
+    }
+
+    /* Ensure search results are visible */
+    .search-results {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    /* Notification bell custom styling */
+    .notification-bell .btn {
+      background: transparent !important;
+      border: none !important;
+      color: #6c757d !important;
+      padding: 8px 12px;
+    }
+
+    .notification-bell .btn:hover {
+      color: #4154f1 !important;
+      background-color: rgba(65, 84, 241, 0.1) !important;
+    }
+  </style>
+
+  <script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Close search dropdown when clicking outside (Desktop)
+      document.addEventListener('click', function(event) {
+        const searchContainer = document.querySelector('.search-bar-container');
+        const searchDropdown = document.getElementById('searchBarCollapse');
+        
+        if (searchContainer && searchDropdown && !searchContainer.contains(event.target) && searchDropdown.classList.contains('show')) {
+          const bsCollapse = new bootstrap.Collapse(searchDropdown, {
+            toggle: false
+          });
+          bsCollapse.hide();
+        }
+      });
+
+      // Auto-focus search input when dropdown opens (Desktop)
+      const searchDropdown = document.getElementById('searchBarCollapse');
+      if (searchDropdown) {
+        searchDropdown.addEventListener('shown.bs.collapse', function() {
+          const searchInput = this.querySelector('input[type="search"]');
+          if (searchInput) {
+            setTimeout(() => {
+              searchInput.focus();
+            }, 100);
+          }
+        });
+      }
+
+      // Auto-focus search input when modal opens (Mobile)
+      const searchModal = document.getElementById('searchModal');
+      if (searchModal) {
+        searchModal.addEventListener('shown.bs.modal', function() {
+          const searchInput = this.querySelector('input[type="search"]');
+          if (searchInput) {
+            setTimeout(() => {
+              searchInput.focus();
+            }, 100);
+          }
+        });
+      }
+
+      // Close mobile modal when clicking on search result actions
+      document.addEventListener('livewire:action', function() {
+        const searchModal = bootstrap.Modal.getInstance(document.getElementById('searchModal'));
+        if (searchModal) {
+          // Don't close modal immediately, let user see the success message
+          setTimeout(() => {
+            searchModal.hide();
+          }, 1500);
+        }
+      });
+
+      // Existing avatar selection functionality
+      const avatarOptions = document.querySelectorAll('.avatar-option');
+      avatarOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          avatarOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          
+          const preview = document.getElementById('avatarPreview');
+          if (preview) {
+            preview.src = this.src;
+          }
+        });
+      });
+      
+      // File upload preview
+      const fileInput = document.getElementById('avatarUpload');
+      if (fileInput) {
+        fileInput.addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              const preview = document.getElementById('avatarPreview');
+              if (preview) {
+                preview.src = e.target.result;
+              }
+            }
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+      }
+
+      // Livewire navigation handling
+      document.addEventListener('livewire:navigated', () => {
+        if (typeof ApexCharts !== 'undefined') {
+          ApexCharts.exec('reinit');
+        }
+      });
+    });
+  </script>
 
 </body>
 

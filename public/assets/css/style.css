@@ -12,11 +12,285 @@
   scroll-behavior: smooth;
 }
 
-/* body {
-  font-family: "Open Sans", sans-serif;
-  background: radial-gradient(circle at top left, #8e4bb2, #0d0015 80%);
-  color: #e8d9ff;
-} */
+/* Styles untuk library cards */
+    .library-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .library-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .library-card .card-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-height: 72px;
+    }
+
+
+/* profile open */
+.avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.avatar-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.avatar-option {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.avatar-option:hover {
+  transform: scale(1.1);
+  border-color: #4154f1;
+}
+
+.avatar-option.selected {
+  border-color: #4154f1;
+  box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.3);
+}
+
+/* === ADMIN AVATAR MANAGEMENT GRID === */
+.admin-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.admin-avatar-item {
+  position: relative;
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.admin-avatar-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.admin-avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+}
+
+.admin-avatar-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+/* === PROFILE STYLES === */
+.profile-card {
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  border: none;
+  overflow: hidden;
+  background: white;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, #4154f1 0%, #717ff8 100%);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+  position: relative;
+}
+
+.profile-body {
+  padding: 40px;
+}
+
+.form-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 25px;
+  border: 1px solid #f0f0f0;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #4154f1;
+  display: flex;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-title i {
+  margin-right: 12px;
+  font-size: 1.5rem;
+}
+
+/* === VERIFICATION STYLES === */
+.verification-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #e7f7ef;
+  color: #28a745;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-left: 10px;
+}
+
+.verification-badge.unverified {
+  background: #fff5f5;
+  color: #dc3545;
+}
+
+.verification-code-input {
+  display: flex;
+  gap: 10px;
+  max-width: 300px;
+}
+
+.verification-code-input input {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.btn-verify {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-verify:hover {
+  background: #218838;
+  border-color: #1e7e34;
+}
+
+/* === UPLOAD AREA === */
+.avatar-upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.avatar-upload-area:hover {
+  border-color: #4154f1;
+  background: #f0f3ff;
+}
+
+.avatar-upload-area i {
+  font-size: 3rem;
+  color: #6c757d;
+  margin-bottom: 15px;
+}
+
+/* === STATS CARD (jika masih dipakai) === */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 25px;
+}
+
+.stats-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.stats-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* === ANIMATIONS === */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.verifying {
+  animation: pulse 1.5s infinite;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+  .profile-body {
+    padding: 20px;
+  }
+  
+  .avatar-options {
+    gap: 10px;
+  }
+  
+  .avatar-option {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .admin-avatar-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+  }
+  
+  .admin-avatar-img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+  }
+}
+*/
+
+/* profile closed */
 
 a {
   color: #c084f5;

@@ -64,7 +64,7 @@
 <body>
 
   <!-- ======= Main Content Only ======= -->
-  <main id="main" class="main quiz-fullscreen">
+  <main id="main">
     {{ $slot }}
   </main>
 

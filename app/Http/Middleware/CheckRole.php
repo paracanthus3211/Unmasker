@@ -18,7 +18,7 @@ class CheckRole
             return $next($request);
         }
 
-        return redirect('/dashboard')->with('error', 'Akses ditolak. Anda tidak memiliki izin.');
+        return redirect('/user/dashboard')->with('error', 'Akses ditolak. Anda tidak memiliki izin.');
 
         
     }
