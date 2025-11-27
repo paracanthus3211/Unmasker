@@ -93,7 +93,7 @@
                                                              style="width: 32px; height: 32px; object-fit: cover;">
                                                         <div>
                                                             <div class="fw-bold">{{ $user->name }}</div>
-                                                            <small class="text-muted">@{{ $user->username }}</small>
+                                                            <small class="text-muted d-block">{{ $user['username'] }}</small>
                                                         </div>
                                                     </div>
                                                 </td>

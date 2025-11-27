@@ -253,6 +253,13 @@
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
 
+    <li class="nav-item">
+        <a wire:navigate class="nav-link {{ request()->routeIs('user.dashboard') ? '' : 'collapsed' }}" href="{{ route('user.profile') }}">
+          <i class="bi bi-grid"></i>
+          <span>My Profile</span>
+        </a>
+      </li>
+
       <li class="nav-item">
         <a wire:navigate class="nav-link {{ request()->routeIs('user.dashboard') ? '' : 'collapsed' }}" href="{{ route('user.dashboard') }}">
           <i class="bi bi-grid"></i>

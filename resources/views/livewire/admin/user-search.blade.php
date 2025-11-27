@@ -38,7 +38,7 @@
                                          style="width: 40px; height: 40px; object-fit: cover;">
                                     <div>
                                         <h6 class="mb-0 fw-bold">{{ $user['name'] }}</h6>
-                                        <small class="text-muted d-block">@{{ $user['username'] }}</small> <!-- ✅ TAMPILKAN USERNAME -->
+                                        <small class="text-muted d-block">{{ $user['username'] }}</small><!-- ✅ TAMPILKAN USERNAME -->
                                         <small class="text-muted">
                                             {{ $user['activity_status'] }} • 
                                             {{ $user['completed_levels'] }} levels completed

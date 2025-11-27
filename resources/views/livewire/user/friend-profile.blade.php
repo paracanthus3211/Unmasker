@@ -1,4 +1,4 @@
-<div>
+<div class="user-friend-profile">
     <div class="pagetitle">
         <h1>👤 Profil Teman</h1>
         <nav>
@@ -181,36 +181,35 @@
             </div>
         </div>
     @endif
-</div>
 
-<style>
-.profile-card {
-    text-align: center;
-}
-
-.progress {
-    border-radius: 10px;
-}
-
-.progress-bar {
-    border-radius: 10px;
-}
-
-.toast {
-    z-index: 1055;
-}
-</style>
-
-<script>
-// Auto-hide toast after 5 seconds
-document.addEventListener('DOMContentLoaded', function() {
-    const toast = document.querySelector('.toast');
-    if (toast) {
-        setTimeout(() => {
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.hide();
-        }, 5000);
+    <style>
+    .profile-card {
+        text-align: center;
     }
-});
-</script>
+
+    .progress {
+        border-radius: 10px;
+    }
+
+    .progress-bar {
+        border-radius: 10px;
+    }
+
+    .toast {
+        z-index: 1055;
+    }
+    </style>
+
+    <script>
+    // Auto-hide toast after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const toast = document.querySelector('.toast');
+        if (toast) {
+            setTimeout(() => {
+                const bsToast = new bootstrap.Toast(toast);
+                bsToast.hide();
+            }, 5000);
+        }
+    });
+    </script>
 </div>
